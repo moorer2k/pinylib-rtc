@@ -124,8 +124,10 @@ class TinychatRTCClient(object):
         if config.DEBUG_MODE:
             websocket.enableTrace(True)
 
+        wssServer = apis.tinychat.get_connect_token(self.room_name)['server']
+
         self._ws = websocket.create_connection(
-            'wss://wss.tinychat.com',
+            wssServer,
             header=tc_header,
             origin='https://tinychat.com'
         )
@@ -695,7 +697,7 @@ class TinychatRTCClient(object):
             rtc_version = config.FALLBACK_RTC_VERSION
             log.info('failed to parse rtc version, using fallback: %s' % config.FALLBACK_RTC_VERSION)
 
-        token = apis.tinychat.get_connect_token(self.room_name)
+        token = apis.tinychat.get_connect_token(self.room_name)['token']
         if token is not None:
             # opera/chrome user-agent: tinychat-client-webrtc-chrome_win32-2.0.9-255
             payload = {

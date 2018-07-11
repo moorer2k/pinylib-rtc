@@ -30,10 +30,12 @@ def get_connect_token(room):
     """
     _url = 'https://tinychat.com/api/v1.0/room/token/{0}'.format(room)
 
-    response = util.web.http_get(url=_url, json=True)
-    if response['json'] is not None:
-        return response['json']['result']
-
+    response = util.web.http_get(url=_url, json=True)['json']
+    if response is not None:
+        return {
+            'token': response['result'],
+            'server': response['endpoint']
+        }
 
 def user_info(tc_account):
     """ 
